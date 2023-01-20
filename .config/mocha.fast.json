@@ -1,9 +1,0 @@
-{
-    "$schema": "https://json.schemastore.org/mocharc.json",
-    "exclude": ["src/test/packages/**", "src/test/slow/**"],
-    "extension": ["ts", "tsx"],
-    "require": ["ts-node/register"],
-    "spec": ["src/test/**/*.test.ts"],
-    "timeout": 5000,
-    "watch-files": ["src/**/*.ts"]
-}
