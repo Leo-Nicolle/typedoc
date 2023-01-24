@@ -360,9 +360,9 @@ export class CommentPlugin extends ConverterComponent {
         // reflection. This is important so that in type aliases we don't end up with
         // a comment rendered twice.
         delete reflection.comment;
-
+        if(reflection.name === 'getNodes')debugger;
+        if(reflection.id === 3252 || reflection.id === 3657 || reflection.id === 3656) debugger;
         for (const signature of signatures) {
-            if(signature.id === 3657) debugger;
             const childComment = (signature.comment ||= comment?.clone());
             if (!childComment) continue;
 
@@ -531,7 +531,7 @@ function moveNestedParamTags(comment: Comment, parameter: ParameterReflection) {
             const tags = comment.blockTags.filter(
                 (t) =>
                     t.tag === "@param" &&
-                    t.name?.startsWith(`${parameter.name}.`)
+                    t.name?.startsWith(`${parameter.name}`)
             );
 
             for (const tag of tags) {
