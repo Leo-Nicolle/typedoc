@@ -90,7 +90,7 @@ describe("Entry Points", () => {
     });
 
     it("Supports resolving packages outside of cwd", () => {
-        const fixture = tempdirProject({ rootDir: tmpdir() });
+        const fixture = tempdirProject(tmpdir());
         fixture.addJsonFile("tsconfig.json", {
             include: ["."],
         });
@@ -114,7 +114,7 @@ describe("Entry Points", () => {
     });
 
     it("Supports custom tsconfig files #2061", () => {
-        const fixture = tempdirProject({ rootDir: tmpdir() });
+        const fixture = tempdirProject(tmpdir());
         fixture.addJsonFile("tsconfig.lib.json", {
             include: ["."],
         });

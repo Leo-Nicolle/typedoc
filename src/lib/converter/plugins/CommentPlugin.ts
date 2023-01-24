@@ -362,6 +362,7 @@ export class CommentPlugin extends ConverterComponent {
         delete reflection.comment;
 
         for (const signature of signatures) {
+            if(signature.id === 3657) debugger;
             const childComment = (signature.comment ||= comment?.clone());
             if (!childComment) continue;
 
