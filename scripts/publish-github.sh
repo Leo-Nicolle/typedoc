@@ -3,6 +3,8 @@
 file=$(find . -name "typedoc*.tgz")
 echo "found $file"
 tar zxf $file
+rm -rf /tmp/typedoc
+mkdir /tmp/typedoc
 cp -r package/* /tmp/typedoc
 cp -r . /tmp/save-typedoc
 git checkout dist
