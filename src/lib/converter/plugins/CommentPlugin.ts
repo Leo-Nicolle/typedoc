@@ -360,8 +360,6 @@ export class CommentPlugin extends ConverterComponent {
         // reflection. This is important so that in type aliases we don't end up with
         // a comment rendered twice.
         delete reflection.comment;
-        if(reflection.name === 'getNodes')debugger;
-        if(reflection.id === 3252 || reflection.id === 3657 || reflection.id === 3656) debugger;
         for (const signature of signatures) {
             const childComment = (signature.comment ||= comment?.clone());
             if (!childComment) continue;
@@ -526,6 +524,10 @@ function inTypeLiteral(refl: Reflection | undefined) {
 
 // Moves tags like `@param foo.bar docs for bar` into the `bar` property of the `foo` parameter.
 function moveNestedParamTags(comment: Comment, parameter: ParameterReflection) {
+    //@ts-ignore
+    comment.blockTags.forEach((b,i ) => b.id = i);
+    const added:Set<number> = new Set();
+
     const visitor: Partial<TypeVisitor> = {
         reflection(target) {
             const tags = comment.blockTags.filter(
@@ -540,6 +542,11 @@ function moveNestedParamTags(comment: Comment, parameter: ParameterReflection) {
                 const child = target.declaration.getChildByName(path);
 
                 if (child && !child.comment) {
+                    // @ts-ignore
+                    if(added.has(tag.id))continue;
+                    // @ts-ignore
+                     added.add(tag.id);
+
                     child.comment = new Comment(
                         Comment.cloneDisplayParts(tag.content)
                     );
@@ -551,9 +558,14 @@ function moveNestedParamTags(comment: Comment, parameter: ParameterReflection) {
                 .filter(
                     (t) =>
                         t.tag === "@param" &&
-                        t.name?.startsWith(`${parameter.name}.`)
+                        t.name?.startsWith(`${parameter.name}`)
                 )
                 .forEach((tag) => {
+                    // @ts-ignore
+                    if(added.has(tag.id))return;
+                    // @ts-ignore
+                    added.add(tag.id);
+
                     if (!parameter.comment) {
                         parameter.comment = new Comment();
                     }
@@ -570,6 +582,9 @@ function moveNestedParamTags(comment: Comment, parameter: ParameterReflection) {
     };
 
     parameter.type?.visit(visitor);
+    //@ts-ignore
+    comment.blockTags.forEach(tag => delete tag.id)
+    comment.blockTags = comment.blockTags.filter((_, i) => !added.has(i));
 }
 
 function extractLabelTag(comment: Comment): string | undefined {

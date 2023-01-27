@@ -68,7 +68,7 @@
         // Feel free to turn one of these back on and submit a PR!
         "@typescript-eslint/no-non-null-assertion": 0,
         "@typescript-eslint/explicit-module-boundary-types": 0,
-
+        "@typescript-eslint/ban-ts-comment": 0,
         "no-restricted-syntax": [
             "warn",
             {
